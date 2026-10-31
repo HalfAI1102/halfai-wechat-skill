@@ -1,0 +1,60 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PAGE_TITLE}} · 公众号排版</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@500&family=Noto+Sans+SC:wght@400;700;900&display=swap">
+<style>
+:root{--bg:#F4F5F3;--panel:#FFFFFF;--fg:#121513;--muted:#5F6862;--line:#D9DEDA;--accent:#0E8A55;--btn:#090A09;--on-btn:#F2F3F1;--sans:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif;--mono:"Geist Mono",Menlo,monospace;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D100E;--panel:#151A17;--fg:#E5EBE7;--muted:#97A39C;--line:#252C28;--accent:#3DDC97;--btn:#2BE08C;--on-btn:#090A09;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D100E;--panel:#151A17;--fg:#E5EBE7;--muted:#97A39C;--line:#252C28;--accent:#3DDC97;--btn:#2BE08C;--on-btn:#090A09;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;padding:40px 16px 56px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:36px;align-items:start}
+@media (max-width:780px){.wrap{grid-template-columns:minmax(0,1fr)}}
+.side{display:flex;flex-direction:column;gap:20px;min-width:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font-size:32px;line-height:1.2;font-weight:900;text-wrap:balance}
+h1 span{color:var(--muted)}
+.lead{margin:0;color:var(--muted);line-height:1.75;max-width:36em}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+button{font:inherit;font-weight:700;border-radius:999px;padding:10px 18px;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+button.primary{background:var(--btn);border-color:var(--btn);color:var(--on-btn)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toast{min-height:1.4em;color:var(--accent);font-size:13px}
+.steps{margin:0;padding-left:18px;display:grid;gap:6px;line-height:1.7}
+.phone{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:12px;min-width:0;position:sticky;top:16px}
+.phone-bar{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);padding:4px 0 10px;letter-spacing:.08em}
+.article{border-radius:14px;color-scheme:light;overflow:hidden;max-height:82vh;overflow-y:auto}
+@media (max-width:780px){.phone{position:static}.article{max-height:none}}
+</style></head><body>
+<div class="wrap">
+  <div class="side">
+    <div class="eyebrow">HalfAI · {{EYEBROW}}</div>
+    <h1>{{H1}}</h1>
+    <p class="lead">{{LEAD}}</p>
+    <div class="btns"><button class="primary" id="copy">复制排版</button><button id="copyHtml">复制 HTML 源码</button></div>
+    <div class="toast" id="toast" role="status"></div>
+    <ol class="steps">
+      <li>点「复制排版」，到公众号后台新建图文，粘贴到正文。</li>
+      <li>配图已经嵌在正文里，粘贴后等公众号把图片转存完（图片不再显示“上传中”）再保存。</li>
+      <li>标题填：{{TITLE}}</li>
+      <li>摘要填：{{DIGEST}}</li>
+    </ol>
+  </div>
+  <div class="phone"><div class="phone-bar">PREVIEW · 手机宽度</div><div class="article" id="article">
+{{ARTICLE}}  </div></div>
+</div>
+<textarea id="src" hidden></textarea>
+<script>
+const art=document.getElementById('article');const toast=document.getElementById('toast');
+const say=t=>{toast.textContent=t;clearTimeout(say.t);say.t=setTimeout(()=>toast.textContent='',3000)};
+const html=art.innerHTML.trim();
+document.getElementById('copy').addEventListener('click',async()=>{
+  try{if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([art.innerText],{type:'text/plain'})})]);say('已复制，去公众号后台粘贴即可');return;}}catch(e){}
+  const r=document.createRange();r.selectNodeContents(art);const s=getSelection();s.removeAllRanges();s.addRange(r);
+  let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+  if(ok){s.removeAllRanges();say('已复制，去公众号后台粘贴即可')}else say('已选中预览内容，请按 Ctrl/⌘ + C 复制');
+});
+document.getElementById('copyHtml').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(html);say('HTML 源码已复制')}
+  catch(e){const t=document.getElementById('src');t.hidden=false;t.value=html;t.style.cssText='width:100%;height:160px';document.querySelector('.side').appendChild(t);t.select();say('浏览器不允许直接复制，源码已选中，请按 Ctrl/⌘ + C')}
+});
+</script></body></html>
