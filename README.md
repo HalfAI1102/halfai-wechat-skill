@@ -8,7 +8,7 @@ HalfAI 的公众号图文排版 skill：Markdown 稿件 → 墨黑 / 纸白 / Ha
 
 ![HalfAI 像素风品牌横幅](assets/halfai-pixel-banner.gif)
 
-仓库内置 900×383 的绿色像素风 GIF，包含原始 HA Logo 和品牌标语「让 AI 成为你的下限，你来决定上限。」。需要在公众号文章的作者条后加入横幅时，在 Markdown 的 front matter 增加 `brand_banner: yes`；默认关闭。`scripts/build.py` 会把 GIF 直接内嵌进输出 HTML，无须额外复制图片。
+仓库内置 900×383 的绿色像素风 GIF，包含原始 HA Logo 和品牌标语「让 AI 成为你的下限，你来决定上限。」。**现在每篇文章默认自动在正文最开头展示这张横幅**，原有标题片头卡和作者条已取消。`scripts/build.py` 会把 GIF 直接内嵌进输出 HTML，无须额外复制图片或设置 `brand_banner: yes`。文章标题和摘要仍在预览页提供，供填写公众号后台。
 
 ## 安装
 
