@@ -418,6 +418,8 @@ def render(md_path):
            f'<section style="margin:0;padding:24px 16px 28px;background:{PAPER};{SANS}font-size:15px;line-height:1.85;letter-spacing:0.4px;color:{BODY};text-align:left;">\n\n']
     if meta.get('header', 'yes') != 'no':
         out.append(header(meta))
+    if meta.get('brand_banner', 'no').lower() in ('yes', 'true', '1'):
+        out.append(image(ASSETS, 'HalfAI 像素品牌横幅', 'halfai-pixel-banner.gif', ''))
     n_ch = n_item = n_sub = 0
     first_para = True
     buf = []
