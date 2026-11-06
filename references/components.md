@@ -8,26 +8,22 @@
 ---
 title: 上下文一百万 token，      # 标题第一行（白字，说事实），通常以逗号结尾
 title2: 到底能干什么？            # 标题第二行（灰字，给观点）
-eyebrow: EP.27 · AI 实测          # 片头卡上方绿色等宽小字
-bar_left: EP.27                   # 片头卡进度条左边的小字（默认取 eyebrow 第一段）
-date: 2026.10                     # 片头卡进度条右边
+eyebrow: EP.27 · AI 实测          # 仅用于预览页说明，正文无旧片头卡
 digest: 一句话摘要，填公众号后台   # 预览页显示，方便复制
 wechat_title: 可选，公众号标题      # 默认 = title + title2
 slug: 可选，输出文件名前缀          # 默认 = 稿件文件名
 item_label: SKILL                 # `##` 条目的编号前缀，如 SKILL 01 / 08（默认 NO.）
 sub_label: TYPE                   # `###` 小分类的编号前缀（默认 TYPE）
-author: HalfAI                    # 作者条（默认 HalfAI）
-author_desc: AI 工具实测 · 每周更新
 ending: 今天就到这。               # 片尾两行，默认就是这两句
 ending2: 剩下的一半，下期讲。
 next: 下一期标题                   # 可选：片尾「下一期」卡
 prev: 往期标题                     # 可选：片尾「往期」卡
 preview_note: 预览页左侧说明文字    # 可选
-header: no                        # 可选：不要片头卡和作者条
-brand_banner: yes                 # 可选：作者条后插入像素风品牌横幅，默认 no；900×383 GIF 自动内嵌
 footer: no                        # 可选：不要片尾
 ---
 ```
+
+每篇文章的开头自动插入 `assets/halfai-pixel-banner.gif`（900×383）。旧片头卡和作者条不再生成，无需额外配置。`header`、`brand_banner` 旧参数会被忽略，手动写入同名 GIF 引用也会被跳过，以免重复。
 
 ## 正文
 
