@@ -103,30 +103,6 @@ def split(line, n):
 
 
 # ---------------------------------------------------------------- 组件
-def header(m):
-    eyebrow = m.get('eyebrow', 'AI 实测')
-    left = m.get('bar_left', eyebrow.split('·')[0].strip() or 'HALFAI')
-    return f'''  <!-- 片头卡 -->
-  <section style="margin:0 0 22px;padding:22px 20px 18px;background:{INK};border-radius:6px;">
-    <p style="margin:0 0 18px;line-height:1;">{ha(16, -3)}<span style="margin-left:7px;font-size:12px;font-weight:600;color:{WHITE};vertical-align:0;">HalfAI</span></p>
-    <p style="margin:0 0 10px;">{kicker(eyebrow, GREEN)}</p>
-    <p style="margin:0;font-size:26px;font-weight:900;line-height:1.3;letter-spacing:-1px;color:{WHITE};">{m.get('title', '标题第一行，说事实，')}</p>
-    <p style="margin:0;font-size:26px;font-weight:900;line-height:1.3;letter-spacing:-1px;color:{GRAY};">{m.get('title2', '第二行，给观点')}</p>
-    <section style="margin:22px 0 0;line-height:1;">
-      <span style="{MONO}font-size:10px;color:{GRAY};">{left}</span>
-      <span style="display:inline-block;width:55%;height:2px;margin:0 10px;background:{LINE};vertical-align:middle;"><span style="display:block;width:30%;height:2px;background:{GREEN};"></span></span>
-      <span style="{MONO}font-size:10px;color:{GRAY};">{m.get('date', '')}</span>
-    </section>
-  </section>
-
-  <!-- 作者条 -->
-  <section style="margin:0 0 26px;line-height:1.4;">
-    <span style="display:inline-block;width:34px;height:34px;line-height:34px;border-radius:6px;background:{INK};text-align:center;vertical-align:middle;">{ha(20, -4)}</span><span style="display:inline-block;margin-left:10px;vertical-align:middle;"><span style="display:block;font-size:15px;font-weight:800;color:{INK};">{m.get('author', 'HalfAI')}</span><span style="display:block;font-size:12px;color:{GRAY};">{m.get('author_desc', 'AI 工具实测 · 每周更新')}</span></span>
-  </section>
-
-'''
-
-
 def footer(m):
     extra = ''
     for key, label in (('next', '下一期'), ('prev', '往期')):
@@ -181,7 +157,7 @@ def subhead(label, n, name, right=''):
 MIME = {'.gif': 'image/gif', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp'}
 
 
-def image(base, alt, src, cap):
+def image(base, alt, src, cap, top=24):
     bottom = 8 if cap else 24
     path = src if os.path.isabs(src) else os.path.join(base, src)
     if not os.path.splitext(path)[1]:  # 没写扩展名时按 gif/jpg/png 依次找
@@ -192,7 +168,7 @@ def image(base, alt, src, cap):
     if os.path.isfile(path):
         mime = MIME.get(os.path.splitext(path)[1].lower(), 'image/png')
         data = base64.b64encode(open(path, 'rb').read()).decode()
-        s = (f'  <p style="margin:24px 0 {bottom}px;text-align:center;line-height:0;">'
+        s = (f'  <p style="margin:{top}px 0 {bottom}px;text-align:center;line-height:0;">'
              f'<img src="data:{mime};base64,{data}" alt="{html.escape(alt)}" '
              f'style="display:block;width:100%;height:auto;margin:0 auto;border-radius:6px;"></p>\n')
     else:
@@ -416,10 +392,8 @@ def render(md_path):
     total_items = sum(1 for l in lines if l.startswith('## '))
     out = [f'<!-- HalfAI · {meta.get("title", "")}{meta.get("title2", "")} · 公众号排版 -->\n',
            f'<section style="margin:0;padding:24px 16px 28px;background:{PAPER};{SANS}font-size:15px;line-height:1.85;letter-spacing:0.4px;color:{BODY};text-align:left;">\n\n']
-    if meta.get('header', 'yes') != 'no':
-        out.append(header(meta))
-    if meta.get('brand_banner', 'no').lower() in ('yes', 'true', '1'):
-        out.append(image(ASSETS, 'HalfAI 像素品牌横幅', 'halfai-pixel-banner.gif', ''))
+    # 每篇只展示一张固定像素 GIF 作为品牌片头，取消旧标题卡和作者条。
+    out.append(image(ASSETS, 'HalfAI 像素品牌横幅', 'halfai-pixel-banner.gif', '', top=0))
     n_ch = n_item = n_sub = 0
     first_para = True
     buf = []
@@ -470,7 +444,9 @@ def render(md_path):
             out.append(divider())
         elif m_img:
             flush()
-            out.append(image(base, m_img.group(1), m_img.group(2), m_img.group(3) or ''))
+            # 固定品牌 GIF 已插入开头，跳过正文里的重复引用。
+            if os.path.basename(m_img.group(2)) != 'halfai-pixel-banner.gif':
+                out.append(image(base, m_img.group(1), m_img.group(2), m_img.group(3) or ''))
         elif s.startswith('<'):
             flush()
             out.append('  ' + s + '\n')
