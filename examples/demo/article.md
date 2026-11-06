@@ -2,8 +2,6 @@
 title: 上下文一百万 token，
 title2: 到底能干什么？
 eyebrow: EP.27 · AI 实测
-bar_left: EP.27
-date: 2026.10
 digest: 一次读完 300 页财报，我们实测了它到底能不能读懂。
 item_label: TOOL
 sub_label: TYPE
