@@ -113,8 +113,8 @@ def footer(m):
     return f'''
   <!-- 片尾 -->
   <section style="margin:30px 0 0;padding:22px 20px;background:{INK};border-radius:6px;">
-    <p style="margin:0;font-size:20px;font-weight:900;line-height:1.35;color:{WHITE};">{m.get('ending', '今天就到这。')}</p>
-    <p style="margin:0 0 18px;font-size:20px;font-weight:900;line-height:1.35;color:{GRAY};">{m.get('ending2', '剩下的一半，下期讲。')}</p>
+    <p style="margin:0;font-size:20px;font-weight:900;line-height:1.35;color:{WHITE};">{m.get('ending', '让AI成为你的下限，')}</p>
+    <p style="margin:0 0 18px;font-size:20px;font-weight:900;line-height:1.35;color:{GRAY};">{m.get('ending2', '你来决定上限。')}</p>
 {extra}    <p style="margin:{'10px' if extra else '0'} 0 0;text-align:center;line-height:1.4;">{ha(18, -4)}<span style="margin-left:8px;font-size:14px;font-weight:700;color:{WHITE};">关注 HalfAI</span><span style="font-size:12px;color:{GRAY};">　点上方名片即可关注</span></p>
   </section>
 '''

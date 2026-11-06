@@ -14,8 +14,8 @@ wechat_title: 可选，公众号标题      # 默认 = title + title2
 slug: 可选，输出文件名前缀          # 默认 = 稿件文件名
 item_label: SKILL                 # `##` 条目的编号前缀，如 SKILL 01 / 08（默认 NO.）
 sub_label: TYPE                   # `###` 小分类的编号前缀（默认 TYPE）
-ending: 今天就到这。               # 片尾两行，默认就是这两句
-ending2: 剩下的一半，下期讲。
+ending: 让AI成为你的下限，         # 片尾两行，默认就是这两句
+ending2: 你来决定上限。
 next: 下一期标题                   # 可选：片尾「下一期」卡
 prev: 往期标题                     # 可选：片尾「往期」卡
 preview_note: 预览页左侧说明文字    # 可选
